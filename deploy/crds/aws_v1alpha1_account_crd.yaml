@@ -70,10 +70,13 @@ spec:
               - name
               - id
               type: object
+            orgID:
+              type: string
           required:
           - awsAccountID
           - iamUserSecret
           - claimLink
+          - orgID
           type: object
         status:
           properties:

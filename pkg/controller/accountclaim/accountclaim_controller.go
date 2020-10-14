@@ -372,6 +372,9 @@ func getUnclaimedAccount(reqLogger logr.Logger, accountList *awsv1alpha1.Account
 
 		if !account.Status.Claimed && account.Spec.ClaimLink == "" && account.Status.State == "Ready" {
 			// Check for a reused account with matching legalEntity
+			if account.Spec.OrgID != accountClaim.Spec.OrgID {
+				continue
+			}
 			if account.Status.Reused {
 				if matchAccountForReuse(&account, accountClaim) {
 					reusedAccountFound = true

@@ -1,8 +1,10 @@
 apiVersion: aws.managed.openshift.io/v1alpha1
 kind: AccountPool
 metadata:
-  name: example-accountpool
+  name: example-accountpool-2
   namespace: aws-account-operator
 spec:
   # Add fields here
   poolSize: 1
+  orgID: "456"
+  credentialsSecret: aws-org-2

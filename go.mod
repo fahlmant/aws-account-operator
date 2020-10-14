@@ -8,7 +8,6 @@ require (
 	github.com/evanphx/json-patch v4.5.0+incompatible // indirect
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/go-logr/logr v0.1.0
-	github.com/go-openapi/spec v0.19.0
 	github.com/golang/mock v1.3.1-0.20190508161146-9fa652df1129
 	github.com/gregjones/httpcache v0.0.0-20190212212710-3befbb6ad0cc // indirect
 	github.com/onsi/ginkgo v1.12.0
@@ -25,7 +24,6 @@ require (
 	k8s.io/api v0.0.0-20190612125737-db0771252981
 	k8s.io/apimachinery v0.0.0-20190612125636-6a5db36e93ad
 	k8s.io/client-go v11.0.0+incompatible
-	k8s.io/kube-openapi v0.0.0-20190320154901-5e45bb682580
 	sigs.k8s.io/controller-runtime v0.1.12
 )
 

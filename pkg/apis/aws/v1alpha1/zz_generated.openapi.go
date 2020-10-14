@@ -407,8 +407,14 @@ func schema_pkg_apis_aws_v1alpha1_AccountClaimSpec(ref common.ReferenceCallback)
 							Format: "",
 						},
 					},
+					"orgID": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
 				},
-				Required: []string{"legalEntity", "awsCredentialSecret", "aws", "accountLink"},
+				Required: []string{"legalEntity", "awsCredentialSecret", "aws", "accountLink", "orgID"},
 			},
 		},
 		Dependencies: []string{
@@ -504,8 +510,20 @@ func schema_pkg_apis_aws_v1alpha1_AccountPoolSpec(ref common.ReferenceCallback) 
 							Format: "int32",
 						},
 					},
+					"orgID": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
+					"credentialsSecret": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
 				},
-				Required: []string{"poolSize"},
+				Required: []string{"poolSize", "orgID", "credentialsSecret"},
 			},
 		},
 		Dependencies: []string{},
@@ -587,8 +605,14 @@ func schema_pkg_apis_aws_v1alpha1_AccountSpec(ref common.ReferenceCallback) comm
 							Ref: ref("github.com/openshift/aws-account-operator/pkg/apis/aws/v1alpha1.LegalEntity"),
 						},
 					},
+					"orgID": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
 				},
-				Required: []string{"awsAccountID", "iamUserSecret"},
+				Required: []string{"awsAccountID", "iamUserSecret", "orgID"},
 			},
 		},
 		Dependencies: []string{

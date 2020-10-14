@@ -42,11 +42,17 @@ spec:
           type: object
         spec:
           properties:
+            credentialsSecret:
+              type: string
+            orgID:
+              type: string
             poolSize:
               format: int64
               type: integer
           required:
           - poolSize
+          - orgID
+          - credentialsSecret
           type: object
         status:
           properties:

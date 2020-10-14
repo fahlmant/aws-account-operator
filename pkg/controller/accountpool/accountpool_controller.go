@@ -110,13 +110,15 @@ func (r *ReconcileAccountPool) Reconcile(request reconcile.Request) (reconcile.R
 	unclaimedAccountCount := 0
 	claimedAccountCount := 0
 	for _, account := range accountList.Items {
-		// We don't want to count reused accounts here, filter by LegalEntity.ID
-		if !account.Status.Claimed && account.Spec.LegalEntity.ID == "" {
-			if account.Status.State != "Failed" {
-				unclaimedAccountCount++
+		if account.Spec.OrgID == currentAccountPool.Spec.OrgID {
+			// We don't want to count reused accounts here, filter by LegalEntity.ID
+			if !account.Status.Claimed && account.Spec.LegalEntity.ID == "" {
+				if account.Status.State != "Failed" {
+					unclaimedAccountCount++
+				}
+			} else {
+				claimedAccountCount++
 			}
-		} else {
-			claimedAccountCount++
 		}
 	}
 
@@ -143,6 +145,9 @@ func (r *ReconcileAccountPool) Reconcile(request reconcile.Request) (reconcile.R
 	if err := controllerutil.SetControllerReference(currentAccountPool, newAccount, r.scheme); err != nil {
 		return reconcile.Result{}, err
 	}
+
+	// Set account CR's OrgID
+	newAccount.Spec.OrgID = currentAccountPool.Spec.OrgID
 
 	reqLogger.Info(fmt.Sprintf("Creating account %s for accountpool. Unclaimed accounts: %d, poolsize%d", newAccount.Name, unclaimedAccountCount, poolSizeCount))
 	err = r.client.Create(context.TODO(), newAccount)

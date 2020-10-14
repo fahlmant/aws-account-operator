@@ -22,6 +22,7 @@ type AccountClaimSpec struct {
 	BYOC                bool        `json:"byoc,omitempty"`
 	BYOCSecretRef       SecretRef   `json:"byocSecretRef,omitempty"`
 	BYOCAWSAccountID    string      `json:"byocAWSAccountID,omitempty"`
+	OrgID               string      `json:"orgID"`
 }
 
 // AccountClaimStatus defines the observed state of AccountClaim

@@ -192,6 +192,22 @@ func (r *ReconcileAccount) Reconcile(request reconcile.Request) (reconcile.Resul
 	} else {
 		// Normal account creation
 
+		// Get the owning AccountPool
+		accountPoolName := currentAcctInstance.OwnerReferences[0].Name
+		// Fetch the Account instance
+		owningAccountPool := &awsv1alpha1.AccountPool{}
+		err := r.Client.Get(context.TODO(), types.NamespacedName{Name: accountPoolName, Namespace: awsv1alpha1.AccountCrNamespace}, owningAccountPool)
+		if err != nil {
+			return reconcile.Result{}, err
+		}
+
+		// Build aws client with credentials from the AccountP
+		awsSetupClient, err := r.awsClientBuilder.GetClient(controllerName, r.Client, awsclient.NewAwsClientInput{
+			SecretName: owningAccountPool.Spec.CredentialsSecret,
+			NameSpace:  awsv1alpha1.AccountCrNamespace,
+			AwsRegion:  "us-east-1",
+		})
+
 		// Test PendingVerification state creating support case and checking for case status
 		if currentAcctInstance.IsPendingVerification() {
 			return r.handleNonCCSPendingVerification(reqLogger, currentAcctInstance, awsSetupClient)
@@ -253,6 +269,21 @@ func (r *ReconcileAccount) Reconcile(request reconcile.Request) (reconcile.Resul
 			iamUserSRE = fmt.Sprintf("%s-%s", iamUserNameSRE, currentAccInstanceID)
 			roleToAssume = fmt.Sprintf("%s-%s", byocRole, currentAccInstanceID)
 		} else {
+			// Get the owning AccountPool
+			accountPoolName := currentAcctInstance.OwnerReferences[0].Name
+			// Fetch the Account instance
+			owningAccountPool := &awsv1alpha1.AccountPool{}
+			err := r.Client.Get(context.TODO(), types.NamespacedName{Name: accountPoolName, Namespace: awsv1alpha1.AccountCrNamespace}, owningAccountPool)
+			if err != nil {
+				return reconcile.Result{}, err
+			}
+
+			// Build aws client with credentials from the AccountP
+			awsSetupClient, err = r.awsClientBuilder.GetClient(controllerName, r.Client, awsclient.NewAwsClientInput{
+				SecretName: owningAccountPool.Spec.CredentialsSecret,
+				NameSpace:  awsv1alpha1.AccountCrNamespace,
+				AwsRegion:  "us-east-1",
+			})
 			roleToAssume = awsv1alpha1.AccountOperatorIAMRole
 		}
 

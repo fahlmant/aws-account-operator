@@ -98,11 +98,14 @@ spec:
               - name
               - id
               type: object
+            orgID:
+              type: string
           required:
           - legalEntity
           - awsCredentialSecret
           - aws
           - accountLink
+          - orgID
           type: object
         status:
           properties:
